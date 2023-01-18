@@ -18,6 +18,7 @@ namespace Deneme.Controllers
 		}
 	public PartialViewResult CommentListByBlog(int id)
 		{
+			ViewBag.str = "Deneme";
 			var result=cm.GetAll(id);
 			return PartialView(result );
 		}

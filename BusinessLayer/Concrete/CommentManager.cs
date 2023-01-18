@@ -25,7 +25,13 @@ namespace BusinessLayer.Concrete
 
 		public List<Comment> GetAll(int id)
 		{
-		return _commentDal.GetAll(x=>x.BlogId==id);
+		
+			var result= _commentDal.GetAll(x => x.BlogId == id);
+			if (result == null)
+			{
+			
+			}
+			return result;
 		}
 	}
 }

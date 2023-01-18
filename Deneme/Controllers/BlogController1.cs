@@ -16,8 +16,11 @@ namespace Deneme.Controllers
         }
     public IActionResult BlogReadAll(int id)
         {
+            ViewBag.i = id;
+            ViewBag.title = "Deneme";
             var result=blogManager.GetListByID(id);
             return View(result);
         }
+    
     }
 }
