@@ -39,7 +39,12 @@ namespace BusinessLayer.Concrete
 			return _blogDal.GetAll();
 		}
 
-		public List<Blog> GetBlogListWithCategory()
+		public List<Blog> GetBlogListByWriter(int id)
+		{
+			return _blogDal.GetAll(x => x.WriterID == id);
+        }
+
+        public List<Blog> GetBlogListWithCategory()
 		{
 			return _blogDal.GetListWithCategory();
 		}
