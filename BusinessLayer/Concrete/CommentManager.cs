@@ -20,17 +20,13 @@ namespace BusinessLayer.Concrete
 
 		public void CommentAdd(Comment comment)
 		{
-		
+			_commentDal.Insert(comment);
 		}
 
 		public List<Comment> GetAll(int id)
 		{
 		
 			var result= _commentDal.GetAll(x => x.BlogId == id);
-			if (result == null)
-			{
-			
-			}
 			return result;
 		}
 	}

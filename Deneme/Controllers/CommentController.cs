@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
+using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Deneme.Controllers
@@ -12,11 +13,22 @@ namespace Deneme.Controllers
 		{
 			return View();
 		}
-	public PartialViewResult PartialAddComment()
+		[HttpGet]
+		public PartialViewResult PartialAddComment()
 		{
 			return PartialView();
 		}
-	public PartialViewResult CommentListByBlog(int id)
+        [HttpPost]
+        public IActionResult PartialAddComment(Comment p)
+        {
+			p.CommentDate = DateTime.Parse(DateTime.Now.ToShortDateString());
+			p.CommentStatus = true;
+			p.BlogId = 19;
+			cm.CommentAdd(p);
+			Response.Redirect("/BlogController1/Index");
+			return PartialView();
+        }
+        public PartialViewResult CommentListByBlog(int id)
 		{
 			ViewBag.str = "Deneme";
 			var result=cm.GetAll(id);
