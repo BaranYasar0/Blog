@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
@@ -14,6 +15,15 @@ builder.Services.AddMvc(config =>
               .Build();
     config.Filters.Add(new AuthorizeFilter(policy));
 });
+
+builder.Services.AddMvc();
+builder.Services.AddAuthentication(
+    CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(x =>
+    {
+        x.LoginPath = "/Login/Index";
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,15 +34,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseSession();
+//app.UseSession();
 
 app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1","?code={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseAuthentication();
 
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(

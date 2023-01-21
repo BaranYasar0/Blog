@@ -1,26 +1,29 @@
 ﻿using BusinessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Deneme.Controllers
 {
+    [AllowAnonymous]
     public class BlogController1 : Controller
     {
-        
-        BlogManager blogManager= new BlogManager(new EfBlogRepository());
+
+        BlogManager blogManager = new BlogManager(new EfBlogRepository());
 
         public IActionResult Index()
         {
-            var values=blogManager.GetBlogListWithCategory();
+            var values = blogManager.GetBlogListWithCategory();
             return View(values);
         }
-    public IActionResult BlogReadAll(int id)
+        public IActionResult BlogReadAll(int id)
         {
             ViewBag.i = id;
             ViewBag.title = "Deneme";
-            var result=blogManager.GetListByID(id);
+            var result = blogManager.GetListByID(id);
             return View(result);
         }
-    
+
     }
+
 }
