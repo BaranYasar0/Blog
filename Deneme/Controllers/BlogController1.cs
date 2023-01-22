@@ -30,7 +30,7 @@ namespace Deneme.Controllers
 
         public IActionResult BlogListByWriter()
         {
-            var values = blogManager.GetBlogListByWriter(4);
+            var values = blogManager.GetListWithCategoryByWriterBM(4);
             return View(values);
         }
 
@@ -62,6 +62,45 @@ namespace Deneme.Controllers
                 return RedirectToAction("BlogListByWriter","BlogController1");
             }
             return View();
+        }
+        public IActionResult DeleteBlog(int id) 
+        {
+         var result=blogManager.GetById(id);
+            blogManager.TRemove(result);
+            return RedirectToAction("BlogListByWriter","BlogController1");
+        }
+
+        [HttpGet]
+        public IActionResult EditBlog(int id)
+        {
+            var blogValue=blogManager.GetById(id);
+            CategoryManager cm = new CategoryManager(new EfCategoryRepository());
+            List<SelectListItem> values = (from x in cm.GetAll()
+                                           select new SelectListItem
+                                           {
+                                               Text = x.CategoryName,
+                                               Value = x.CategoryID.ToString()
+                                           }).ToList();
+            ViewBag.cv = values;
+            return View(blogValue);
+        }
+
+        [HttpPost]
+        public IActionResult EditBlog(Blog p)
+        {
+            p.WriterID = 4;
+            p.BlogCreateDate = DateTime.Parse(DateTime.Now.ToShortDateString());
+            p.BlogStatus = true;
+            CategoryManager cm = new CategoryManager(new EfCategoryRepository());
+            List<SelectListItem> values = (from x in cm.GetAll()
+                                           select new SelectListItem
+                                           {
+                                               Text = x.CategoryName,
+                                               Value = x.CategoryID.ToString()
+                                           }).ToList();
+            ViewBag.cv = values;
+            blogManager.TUpdate(p);
+            return RedirectToAction("BlogListByWriter", "BlogController1");
         }
     }
 

@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/WriterLayout.cshtml";
 }
 
-<h1>BlogListByWriter</h1>
+<h2>Yazarın Blogları</h2>
 
 <table class="table table-bordered">
     <tr>
@@ -21,13 +21,18 @@
         @foreach (var item in Model)
         {
         <tr>
-            <td>@item.BlogId</td>
+            <tH>@item.BlogId</tH>
             <td>@item.BlogTitle</td>
-            <td>@item.BlogCreateDate</td>
-            <td>@item.CategoryID</td>
-            <td>@item.BlogStatus</td>
-            <td><a href="#" class="btn btn-danger">Sil</a></td>
-            <td><a href="#" class="btn btn-warning">Düzenle</a></td>
+            <td>@(((DateTime)item.BlogCreateDate).ToString("dd-MMM-yyyy"))</td>
+            <td>@item.Category.CategoryName</td>
+            @if(item.BlogStatus==true){
+                <td>Aktif</td>
+            }
+            else{
+            <td>Pasif</td>
+            }
+            <td><a href="/BlogController1/DeleteBlog/@item.BlogId" onclick="return confirm('Silmek istediğine emin misin?');" class="btn btn-danger">Sil</a></td>
+            <td><a href="/BlogController1/EditBlog/@item.BlogId" class="btn btn-warning">Düzenle</a></td>
         </tr>
         }
 
