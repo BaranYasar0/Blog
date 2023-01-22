@@ -25,7 +25,7 @@ namespace Deneme.Controllers
             {
                 p.WriterStatus = true;
                 p.WriterAbout = "Deneme test";
-                wm.WriterAdd(p);
+                wm.TAdd(p);
                 return RedirectToAction("Index", "BlogController1");
             }
             else
