@@ -1,0 +1,31 @@
+﻿@using EntityLayer.Concrete
+
+@model List<Notification>
+
+@{
+    ViewData["Title"] = "AllNotification";
+    Layout = "~/Views/Shared/WriterLayout.cshtml";
+}
+
+<h1>Bildirimler</h1>
+
+<div class="container">
+<div class="row-cols-6">
+<table class="table table-bordered">
+    <tr>
+        <th>#</th>
+        <th>Bildirim</th>
+        <th>Tarih</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>@item.NotificationID</td>
+        <td>@item.NotificationDetails</td>
+        <td>@((DateTime.Now.Hour)-((item.NotificationDate).Hour)) Saat Önce Gönderilmiş.</td>
+    </tr>
+    }
+</table>
+</div>
+</div>
+

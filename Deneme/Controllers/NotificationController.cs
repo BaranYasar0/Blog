@@ -2,15 +2,21 @@
 using DataAccessLayer.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Deneme.ViewComponents.Writer
+namespace Deneme.Controllers
 {
-    public class WriterNotification:ViewComponent
+    public class NotificationController : Controller
     {
         NotificationManager nm = new NotificationManager(new EfNotificationRepository());
-        public IViewComponentResult Invoke()
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult AllNotification()
         {
             var result = nm.GetAll();
-            return View(result.Where(x=>x.NotificationStatus==true).ToList());
+            
+            return View(result);
         }
     }
 }

@@ -11,10 +11,10 @@
                     @foreach (var item in Model)
                     {
                         
-                    <img src="~/writer/assets/images/faces/face3.jpg" class="img-sm rounded-circle mr-3" alt="image">
+                    <img src="@item.WriterImage" class="img-sm rounded-circle mr-3" alt="image">
                     <div class="mb-0 flex-grow">
-                        <h5 class="mr-2 mb-2">School Website - Authentication Module.</h5>
-                        <p class="mb-0 font-weight-light">It is a long established fact that a reader will be distracted by the readable content of a page.</p>
+                        <h5 class="mr-2 mb-2">@item.WriterName - @item.WriterMail</h5>
+                        <p class="mb-0 font-weight-light">@item.WriterAbout</p>
                     </div>
                     <div class="ml-auto">
                         <i class="mdi mdi-heart-outline text-muted"></i>

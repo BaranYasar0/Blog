@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.Concrete;
+using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +11,10 @@ namespace Deneme.ViewComponents.Writer
 
         public IViewComponentResult Invoke()
         {
-            var result = vm.GetWriterByID(4);
+            var userMail = User.Identity.Name;
+            Context c = new Context();
+            var temp = c.Writers.FirstOrDefault(x => x.WriterMail == userMail);
+            var result = vm.GetWriterByID(temp.WriterID);
             return View(result);
         }
     }

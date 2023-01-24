@@ -2,17 +2,23 @@
 using DataAccessLayer.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Deneme.ViewComponents.Writer
+namespace Deneme.Controllers
 {
-    public class WriterMessageNotification:ViewComponent
+    public class MessageController : Controller
     {
         MessageManager mm = new MessageManager(new EfMessageRepository());
-        
-        public IViewComponentResult Invoke()
+        public IActionResult InBox()
         {
             int id = 4;
             var result = mm.GetInboxListByWriter(id);
             return View(result);
         }
+
+        public IActionResult MessageDetails()
+        {
+            var result=mm.GetById(4);
+            return View(result);
+        }
+
     }
 }
