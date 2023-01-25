@@ -25,12 +25,10 @@ namespace Deneme.Controllers
         public IActionResult PartialAddComment(Comment p)
         {
             Context c = new Context();
-            ViewBag.v1 = "dfsdfsdfs";
-            var temp = Url.ActionContext.HttpContext.Request.Scheme;
-			var result=temp.Substring(temp.Length - 2);
+			
 			p.CommentDate = DateTime.Parse(DateTime.Now.ToShortDateString());
 			p.CommentStatus = true;
-			p.BlogId =Int16.Parse(result);
+			p.BlogId = 19;
 			cm.CommentAdd(p);
 			
 			Response.Redirect("/BlogController1/Index");

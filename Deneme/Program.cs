@@ -10,7 +10,7 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddSession();
 builder.Services.AddMvc(config =>
 {
-    var policy=new AuthorizationPolicyBuilder()
+    var policy = new AuthorizationPolicyBuilder()
               .RequireAuthenticatedUser()
               .Build();
     config.Filters.Add(new AuthorizeFilter(policy));
@@ -36,7 +36,7 @@ if (!app.Environment.IsDevelopment())
 
 //app.UseSession();
 
-app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1","?code={0}");
+app.UseStatusCodePagesWithReExecute("/ErrorPage/Error1", "?code={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -48,5 +48,11 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+
 
 app.Run();
