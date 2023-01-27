@@ -4,6 +4,7 @@ using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
 
 namespace Deneme.Controllers
 {
@@ -24,8 +25,6 @@ namespace Deneme.Controllers
         [HttpPost]
         public IActionResult PartialAddComment(Comment p)
         {
-            Context c = new Context();
-			
 			p.CommentDate = DateTime.Parse(DateTime.Now.ToShortDateString());
 			p.CommentStatus = true;
 			p.BlogId = 19;
@@ -34,11 +33,6 @@ namespace Deneme.Controllers
 			Response.Redirect("/BlogController1/Index");
 			return PartialView();
         }
-        public PartialViewResult CommentListByBlog(int id)
-		{
-			ViewBag.str = "Deneme";
-			var result=cm.GetAll(id);
-			return PartialView(result );
-		}
+        
 	}
 }
