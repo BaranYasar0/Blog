@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<button type="button" id="btngetlist" class="btn btn-outline-primary">Yazar listesi</button>
+<br />
+<div id="writerlist">
+    Buraya yazarlar gelicek
+</div>
+@section scripts{
+
+
+<script>
+    $("#btngetlist").click(function () {
+        $.ajax({
+            method: "Get",
+            contentType: "application/json",
+            url: '/Admin/Writer/WriterList/',
+            dataType: "JSON",
+            success:
+                function (func) {
+                        let w = jQuery.parseJSON(func);
+                        console.log(w);
+                        let tablehtml = "<div class='ibox-title'><h5>Yazar Listesi</h5></div><div class='ibox-content'><table class='table'><thead><tr><th> Yazar ID</th> <th> Yazar Adı </th></tr></thead>";
+                        $.each(w, (index, value) => {
+                            tablehtml += `<tr><td>${value.Id}</td> <td>${value.Name}</td></tr>`
+                        });
+                        tablehtml += "</table></div>";
+                        $("#writerlist").html(tablehtml);
+                },
+            error:
+                function (response) {
+                    console.log("hatanı sikecem artık ")
+                }
+        });
+    });
+</script>
+}

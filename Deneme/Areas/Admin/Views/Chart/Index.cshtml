@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div id="chartdiv" style="width:800px;height:600px;">
+            <h2>Burası Chart Bolgesiiii</h2>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+@section scripts{
+<script type="text/javascript">
+
+google.charts.load('current',{'packages':['corechart']});
+google.charts.setOnLoadCallback(DrawonLoad);
+
+    function DrawonLoad(){
+        $(function(){
+            $.ajax({
+                type:'GET',
+                url: '/Admin/Chart/CategoryChart/',
+                success:function(chartsData){
+                    var data1=chartsData.jsonlist;
+                    var data2=new google.visualization.DataTable();
+
+                    data2.addColumn('string','categoryname');
+                    data2.addColumn('number','categorycount');
+
+                    for(var i=0;i<data1.length;i++){
+                        data2.addRow([data1[i].categoryname,data1[i].categorycount]);
+                    }
+                    var chart = new google.visualization.PieChart(document.getElementById('chartdiv'));
+                    chart.draw(data2,{
+                        title:"Google Chart",
+                        position:"top",
+                        fontsize:"160px"
+                    });
+                }
+            });
+        })
+    }
+</script>
+
+}
