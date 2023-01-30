@@ -5,14 +5,46 @@
 }
 
 <button type="button" id="btngetlist" class="btn btn-outline-primary">Yazar listesi</button>
+<button type="button" id="btngetbyid" class="btn btn-outline-success">Yazar getir</button>
+<button type="button" id="btnaddwriter" class="btn btn-outline-primary">Yazar ekle</button>
+<button type="button" id="btndeletewriter" class="btn btn-outline-danger">Yazar Sil</button>
+<button type="button" id="btnupdatewriter" class="btn btn-outline-warning">Yazar Güncelle</button>
 <br />
 <div id="writerlist">
     Buraya yazarlar gelicek
 </div>
+
+<div id="writerget"> Tek yazar</div>
+<br />
+<div>
+    <input type="text" id="writerid" placeholder="writer id gir" class="form-control" />
+</div>
+<br />
+
+<div> 
+    <input type="text" class="form-control" id="txtwriterid" placeholder="Yazar ID"/>
+</div>
+<br />
+<div>
+    <input type="text" class="form-control" id="txtwritername" placeholder="Yazar Name" />
+</div>
+<br />
+
+<div>
+    <input type="text" id="txtid" placeholder="silinecek writer id gir" class="form-control" />
+</div>
+<br />
+
+<div>
+    <input type="text" id="txtid1" placeholder="güncellenecek writer id gir" class="form-control" />
+    <input type="text" id="txtname1" placeholder="güncellenecek writer name gir" class="form-control" />
+</div>
+
+
 @section scripts{
 
-
 <script>
+    
     $("#btngetlist").click(function () {
         $.ajax({
             method: "Get",
@@ -36,5 +68,66 @@
                 }
         });
     });
+
+        $("#btngetbyid").click(x=>{
+            let id= $("#writerid").val();
+            console.log(id);
+            $.ajax({
+                contentType:"application/json",
+                dataType: "json",
+                type:"get",
+                url: "/Admin/Writer/GetWriterById/",
+                data: { writerid: id },
+                success:function(func){
+                    let w=jQuery.parseJSON(func);
+                    let getvalue=`<table class=table table-bordered> <tr> <th>Yazar ID</th> <th> Yazar Adı</th> </tr> <tr> <td>${w.Id} </td> <td>${w.Name} </td> </tr> </table>`;
+                    $("#writerget").html(getvalue);
+                }
+            });
+        });
+
+        $("#btnaddwriter").click(function () {
+            let writer={
+                Id: $("#txtwriterid").val(),
+                Name: $("#txtwritername").val()
+};
+$.ajax({
+    type:"post",
+    url:"/Admin/Writer/AddWriter/",
+data:writer,
+success:function(func){
+    let result=jQuery.parseJSON(func);
+alert("Yazar girişi yapıldı.");
+}
+});
+        });
+
+        $("#btndeletewriter").click(function(){
+            let id = $("#txtid").val();
+            $.ajax({
+                type:"delete",
+                url:"/Admin/Writer/DeleteWriter/"+id,
+                dataType:"json",
+                success:function(func){
+                    loadData();
+                }
+            })
+        })
+
+        $("#btnupdatewriter").click(function(){
+            let writer={
+                Id:$("#txtid1").val(),
+                Name:$("#txtname1").val()
+            }
+
+            $.ajax({
+                type:"put",
+                url:"/Admin/Writer/UpdateWriter/",
+                data:writer,
+                success:function(func){
+                    alert("Güncelleme işlemi yapıldı.")
+                }
+            })
+        })
 </script>
 }
