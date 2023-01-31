@@ -4,6 +4,7 @@ using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using X.PagedList;
 
 namespace Deneme.Controllers
@@ -32,7 +33,7 @@ namespace Deneme.Controllers
 			
 			Response.Redirect("/BlogController1/Index");
 			return PartialView();
-        }
-        
+		}
 	}
 }
+

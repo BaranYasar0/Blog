@@ -1,6 +1,7 @@
 ﻿using EntityLayer.Concrete;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace DataAccessLayer.Concrete
             optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=CoreBlogDb;integrated security=true;");
         }
 
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Message2>()
@@ -29,11 +31,16 @@ namespace DataAccessLayer.Concrete
                 .WithMany(y => y.WriterReceiver)
                 .HasForeignKey(z => z.ReceiverID)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+            modelBuilder.Entity<Blog>()
+        .ToTable(tb => tb.HasTrigger("AddBlogInRatingTable"));
+            modelBuilder.Entity<Comment>()
+        .ToTable(tb => tb.HasTrigger("AddScoreInComment"));
 
             base.OnModelCreating(modelBuilder);
+          
 
         }
-        
+
         
         
         
@@ -48,5 +55,8 @@ namespace DataAccessLayer.Concrete
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<Message2> Message2s { get; set; }
         public DbSet<Admin> Admins { get; set; }
+
+
+        
     }
 }
