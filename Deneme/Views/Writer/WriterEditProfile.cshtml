@@ -1,6 +1,6 @@
 ﻿@using EntityLayer.Concrete
 
-@model Writer
+@model UserUpdateViewModel
 
 @{
     ViewData["Title"] = "WriterEditProfile";
@@ -9,27 +9,33 @@
 
 <h1>WriterEditProfile</h1>
 
-@using(Html.BeginForm("WriterEditProfile","Writer",FormMethod.Post)){
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Yazar Profil Bilgileri Düzenleme</h4>
                 <br />
                 <p class="card-description"> Basic form elements </p>
-                @Html.HiddenFor(x=>x.WriterID,new{@class="form-control"})
-                <form class="forms-sample">
+                <form class="forms-sample" method="post">
                     <div class="form-group">
                         <label for="exampleInputName1">Yazar Ad Soyad</label>
-                        @Html.TextBoxFor(x=>x.WriterName,new{@class="form-control"})
+                        <input type="text" asp-for="@Model.namesurname" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputName1">Yazar Kullanıcı Adı</label>
+                        <input type="text" asp-for="@Model.username" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail3">Mail Adresi</label>
-                        @Html.TextBoxFor(x=>x.WriterMail,new{@class="form-control"})
+                        <input type="text" asp-for="@Model.mail" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail3">Resim Yolu</label>
+                        <input type="text" asp-for="@Model.imageurl" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword4">Şifre</label>
-                        @Html.TextBoxFor(x=>x.WriterPassword,new{@class="form-control",type="password"})
-                        @Html.ValidationMessageFor(x=>x.WriterPassword)
+                        @Html.TextBoxFor(x=>x.password,new{@class="form-control"})
+                        @*@Html.ValidationMessageFor(x=>x.PasswordHash)*@
                     </div>
                     <div class="form-group">
                         <label>Yazar Görsel</label>
@@ -41,10 +47,10 @@
                             </span>
                         </div>
                     </div>
-                    <div class="form-group">
+                   @* <div class="form-group">
                         <label for="exampleTextarea1">Yazar Hakkında</label>
                         @Html.TextAreaFor(x=>x.WriterAbout,15,3,new{@class="form-control"})
-                    </div>
+                    </div>*@
                     <button type="submit" class="btn btn-gradient-primary mr-2">Güncelle</button>
                     <button class="btn btn-light">İptal</button>
                 </form>
@@ -52,7 +58,6 @@
         </div>
     </div>
 
-}
 
 
 

@@ -3,9 +3,11 @@ using BusinessLayer.ValidationRules;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using Deneme.Models;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.ContentModel;
 
@@ -14,13 +16,20 @@ namespace Deneme.Controllers
 	public class WriterController : Controller
 	{
 		WriterManager wm = new WriterManager(new EfWriterRepository());
+        Context c = new Context();
+		private readonly UserManager<AppUser> _userManager;
+		UserManager userManager = new UserManager(new EfUserRepository());
+
+		public WriterController(UserManager<AppUser> userManager)
+		{
+			_userManager = userManager;
+		}
+
 		[Authorize]
 		public IActionResult Index()
 		{
 			var userMail = User.Identity.Name;
-			Context c = new Context();
 			var result = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterName).FirstOrDefault() ;
-			ViewBag.v1 = result;
 			return View();
 		}
 
@@ -29,10 +38,6 @@ namespace Deneme.Controllers
 			return View();
 		}
 
-		public IActionResult Test()
-		{
-			return View();
-		}
 		public PartialViewResult WriterNavbarPartial()
 		{
 			return PartialView();
@@ -43,36 +48,40 @@ namespace Deneme.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult WriterEditProfile()
+		public async Task<IActionResult> WriterEditProfile()
 		{
-            var userMail = User.Identity.Name;
-            Context c = new Context();
-            var temp = c.Writers.FirstOrDefault(x => x.WriterMail == userMail);
-            var writerValues = wm.GetById(temp.WriterID);
-			return View(writerValues);
+
+			//var userName = User.Identity.Name;
+			//var userMail = c.Users.Where(x => x.UserName == userName).Select(y => y.Email).FirstOrDefault();
+			//var id = c.Users.Where(x => x.Email == userMail).Select(y => y.Id).FirstOrDefault();
+			//var values = userManager.GetById(id);
+			var result = await _userManager.FindByNameAsync(User.Identity.Name);
+            UserUpdateViewModel model=new UserUpdateViewModel();
+            model.mail = result.Email;
+            model.namesurname = result.NameSurname;
+            model.imageurl = result.ImageUrl;
+            model.username = result.UserName;
+            return View(model);
 		}
 
         [HttpPost]
-        public IActionResult WriterEditProfile(Writer p)
+        public async Task<IActionResult> WriterEditProfile(UserUpdateViewModel model)
         {
-			WriterValidator wv = new WriterValidator();
-			ValidationResult results = wv.Validate(p);
-			if (results.IsValid)
-			{
-				p.WriterImage="/writer/assets/images/faces/face3.jpg";
+			var result = await _userManager.FindByNameAsync(User.Identity.Name);
+			result.ImageUrl = model.imageurl;
+			result.NameSurname = model.namesurname;
+			result.Email = model.mail;
+			result.UserName = model.username;
+			result.PasswordHash = _userManager.PasswordHasher.HashPassword(result, model.password);
+			var values = await _userManager.UpdateAsync(result);
 
-                wm.TUpdate(p);
-				return RedirectToAction("Index", "Dashboard");
-			}
-			else
+			if (ModelState.IsValid)
 			{
-				foreach (var item in results.Errors)
-				{
-					ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-				}
-			}
-			return View();
-		}
+                return RedirectToAction("Index", "Dashboard");
+
+            }
+			return View();	
+        }
 		[HttpGet]
 		public IActionResult WriterAdd()
 		{
@@ -100,6 +109,8 @@ namespace Deneme.Controllers
 			wm.TAdd(w);
 			return RedirectToAction("Index", "Dashboard");
 		}
+
+
     }
 
 }

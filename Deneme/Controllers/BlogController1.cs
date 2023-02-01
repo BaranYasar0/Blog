@@ -5,8 +5,10 @@ using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace Deneme.Controllers
 {
@@ -15,6 +17,12 @@ namespace Deneme.Controllers
     {
 
         BlogManager blogManager = new BlogManager(new EfBlogRepository());
+        private readonly UserManager<AppUser> _userManager;
+
+        public BlogController1(UserManager<AppUser> userManager)
+        {
+            _userManager = userManager;
+        }
 
         public IActionResult Index()
         {
@@ -32,8 +40,10 @@ namespace Deneme.Controllers
         public IActionResult BlogListByWriter()
         {
             Context c = new Context();
-            var userMail = User.Identity.Name;
+            var userName = User.Identity.Name;
+            var userMail = c.Users.Where(x => x.UserName == userName).Select(y => y.Email).FirstOrDefault();
             var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterID).FirstOrDefault();
+            //ViewBag.v2 = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var values = blogManager.GetListWithCategoryByWriterBM(writerID);
             return View(values);
         }
@@ -58,7 +68,8 @@ namespace Deneme.Controllers
             BlogValidator bv = new BlogValidator();
             ValidationResult results = bv.Validate(p);
             Context c = new Context();
-            var userMail = User.Identity.Name;
+            var userName = User.Identity.Name;
+            var userMail = c.Users.Where(x => x.UserName == userName).Select(y => y.Email).FirstOrDefault();
             var writerID = c.Writers.Where(x => x.WriterMail == userMail).Select(y => y.WriterID).FirstOrDefault();
             if (results.IsValid)
             {

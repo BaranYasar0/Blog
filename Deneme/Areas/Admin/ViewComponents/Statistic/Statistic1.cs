@@ -22,7 +22,7 @@ namespace Deneme.Areas.Admin.ViewComponents.Statistic
             string apiKey = "6e61fe359e1e94154ff0731f35227082";
             string connectionLink = "https://api.openweathermap.org/data/2.5/weather?q=istanbul&mode=xml&appid=" + apiKey;
 XDocument document =XDocument.Load(connectionLink);
-            var temp = float.Parse(document.Descendants("temperature").ElementAt(0).Attribute("value").Value);
+            var temp = (float.Parse(document.Descendants("temperature").ElementAt(0).Attribute("value").Value)-27200)/100;
             ViewBag.v4 =temp;
             return View();
         }

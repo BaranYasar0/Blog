@@ -33,10 +33,11 @@ namespace BusinessLayer.Concrete
             return _messageDal.GetListWithMessageByWriter(id);
         }
 
-        public void TAdd(Message2 t)
+        public List<Message2> GetSendBoxByWriter(int id)
         {
-            throw new NotImplementedException();
+            return _messageDal.GetSendBoxByWriter(id);
         }
+        public void TAdd(Message2 t) => _messageDal.Insert(t);
 
         public void TRemove(Message2 t)
         {

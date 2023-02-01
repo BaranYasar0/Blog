@@ -17,7 +17,7 @@ namespace Deneme.Areas.Admin.Controllers
 
         public IActionResult Index(int page=1)
         {
-            var values = cm.GetAll().ToPagedList(page,2);
+            var values = cm.GetAll().ToPagedList(page,5);
             return View(values);
         }
 
