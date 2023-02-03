@@ -14,7 +14,7 @@ namespace DataAccessLayer.Concrete
     {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=CoreBlogDb;integrated security=true;");
+            optionsBuilder.UseSqlServer("Data Source=SQL8004.site4now.net;Initial Catalog=db_a94277_oblogydb;User Id=db_a94277_oblogydb_admin;Password=ujnbhy123");
         }
 
         
