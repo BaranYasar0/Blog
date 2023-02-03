@@ -1,4 +1,7 @@
-﻿
+﻿@using EntityLayer.Concrete
+
+@model List<Message2>
+
 @{
     ViewData["Title"] = "InBox";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
@@ -9,8 +12,6 @@
 
 
 <body>
-
-
 
         <div class="wrapper wrapper-content">
         <div class="row">
@@ -47,7 +48,7 @@
 
                 <form method="get" action="index.html" class="float-right mail-search">
                     <div class="input-group">
-                        <input type="text" class="form-control form-control-sm" name="search" placeholder="Search email">
+                        <input type="text" class="form-control form-control-sm" name="search" placeholder="Mail Ara">
                         <div class="input-group-btn">
                             <button type="submit" class="btn btn-sm btn-primary">
                                 Ara
@@ -56,7 +57,7 @@
                     </div>
                 </form>
                 <h2>
-                    Gelen Kutusu (0)
+                    Gelen Kutusu (@Model.Count())
                 </h2>
                 <div class="mail-tools tooltip-demo m-t-md">
                     <div class="btn-group float-right">
@@ -75,25 +76,18 @@
 
                 <table class="table table-hover table-mail">
                 <tbody>
-                <tr class="unread">
+                @foreach (var item in Model)
+                {
+                    
+                    <tr class="read">
                     <td class="check-mail">
                         <input type="checkbox" class="i-checks">
                     </td>
-                    <td class="mail-ontact"><a href="mail_detail.html">Anna Smith</a></td>
-                    <td class="mail-subject"><a href="mail_detail.html">Lorem ipsum dolor noretek imit set.</a></td>
-                    <td class=""><i class="fa fa-paperclip"></i></td>
-                    <td class="text-right mail-date">6.10 AM</td>
+                    <td class="mail-ontact"><a href="mail_detail.html">@item.SenderUser.WriterName</a></td>
+                    <td class="mail-subject"><a href="mail_detail.html">@item.Subject</a></td>
+                    <td class="text-right mail-date">@item.MessageDate.ToString("dd-MMMM-yyyy")</td>
                 </tr>
-                <tr class="unread">
-                    <td class="check-mail">
-                        <input type="checkbox" class="i-checks" checked>
-                    </td>
-                    <td class="mail-ontact"><a href="mail_detail.html">Jack Nowak</a></td>
-                    <td class="mail-subject"><a href="mail_detail.html">Aldus PageMaker including versions of Lorem Ipsum.</a></td>
-                    <td class=""></td>
-                    <td class="text-right mail-date">8.22 PM</td>
-                </tr>
-                
+                }
                 </tbody>
                 </table>
 
